@@ -1,0 +1,14 @@
+{
+    "name": "TestingNode",
+    "author": "The Best",
+    "description": "my test node.js application",
+    "version": "0.0.1",
+    
+    /*"dependencies": {
+        "connect": "1.8.x",
+        "express": "2.5.x"
+    },*/
+    
+    //"engine": "0.8.x",
+    "main": "app.js"
+}
