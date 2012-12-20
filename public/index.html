@@ -13,7 +13,7 @@
                 <h2>An example of HTML5 and CSS3 in action, served by Node.js</h2>
             </hgroup>
         </header>
-        
+
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
@@ -21,57 +21,63 @@
                 <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
-        
-        <input type="text" id="txtFirstName" placeholder="First name" />
-        <input type="text" id="txtLastName" placeholder="Last name" />
-        <input type="button" id="btnGetName" value="Save" />
-        
+
+        <form action="/" method="POST">
+            <input type="text" name="firstName" placeholder="First name" />
+            <input type="text" name="lastName" placeholder="Last name" />
+            <input type="submit" id="btnGetName" value="Save" />
+        </form>
+
         <p></p>
-        
+
         <article>
             <header>
                 <time datetime="2010-01-12" pubdate>
                     <span>Jan</span> 12
                 </time>
                 <h1>
-                    <a href="#" title="Link to this post" 
+                    <a href="#" title="Link to this post"
         rel="bookmark">Article Heading</a>
                 </h1>
             </header>
-            <p>This is an article that demonstrates some of the new features 
-        that HTML5 and CSS3 has to offer. This article contains several sections, each 
-        with its own heading, as well as a video element which will play a video without 
+            <p>This is an article that demonstrates some of the new features
+        that HTML5 and CSS3 has to offer. This article contains several sections, each
+        with its own heading, as well as a video element which will play a video without
         Flash on browsers that support it.</p>
             <section>
                 <header>
                     <h1>This is a section heading</h1>
                 </header>
-                <p>This is an example of a basic section of a document. 
-        A section can refer to different parts of a document, application, or page. 
+                <p>This is an example of a basic section of a document.
+        A section can refer to different parts of a document, application, or page.
         According to the draft W3C spec, HTML5 sections usually have headings.</p>
             </section>
         </article>
-        
+
         <footer>
             <p>&copy; 2009 Company Name. All rights reserved.</p>
         </footer>
     </body>
-    
-    <script src="http://testnode.guitarbreaker7.c9.io:1337/socket.io/socket.io.js"></script>
+
+    <!-- // <script src="http://localhost:8081/socket.io/socket.io.js"></script> -->
     <script>
-        var socket = io.connect("http://localhost:1337"),
-        fName = document.getElementById("txtFirstName"),
-        lName = document.getElementById("txtLastName"),
-        btn = document.getElementById("btnGetName");
-        // handle button click
-        btn.addEventListener("click", function() {
-        // publish setName event with data
-        socket.emit("setName", {firstName: fName.value, lastName: lName.value});
-        return false;
-        });
-        // listen for nameSet event
-        socket.on("nameSet", function(data) {
-        alert("Username set: " + data.userName);
-        });
-    </script>     
+
+        // var socket  = io.connect("http://localhost:8081"),
+        //     fName   = document.getElementById("txtFirstName"),
+        //     lName   = document.getElementById("txtLastName"),
+        //     btn     = document.getElementById("btnGetName");
+
+        // // handle button click
+        // btn.addEventListener("click", function() {
+        //     // publish setName event with data
+        //     socket.emit("setName", {firstName: fName.value, lastName: lName.value});
+        //     return false;
+        // });
+
+        // // listen for nameSet event
+        // socket.on("nameSet", function(data) {
+        //     alert("Username set: " + data.userName);
+        // });
+
+    </script>
 </html>

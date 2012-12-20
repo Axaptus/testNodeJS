@@ -2,8 +2,8 @@ var http        = require('http');
 var path        = require("path");
 var fs          = require('fs');
 var querystring = require("querystring");
-var io          = require("socket.io").listen(process.env.PORT);
-
+var io          = require("socket.io").listen(8081);
+var mustache    = require("mustache");
 
 var extensions = {
     ".html": "text/html",
@@ -28,12 +28,12 @@ http.createServer(function(request, response) {
     var localPath   = __dirname + "/public/";
 
     console.log(filename + " " + ext + " " + dir + " " + localPath);
-    
+
     if (extensions[ext]) {
-        
+
         localPath += (dir ? dir + "/" : "") + filename;
-        
-        path.exists(localPath, function(exists) {
+
+        fs.exists(localPath, function(exists) {
             if (exists) {
                 getFile(localPath, extensions[ext], response);
             } else {
@@ -49,39 +49,39 @@ http.createServer(function(request, response) {
     }
 
 
-}).listen(process.env.PORT);
+}).listen(8080);
 
 function getFile(localPath, mimeType, res) {
-    
+
     fs.readFile(localPath, function(err, contents){
-        
+
         if(!err)
         {
             res.writeHead(200, {
                 "Content-Type": mimeType,
                 "Content-Length": contents.length
             });
-            
-            res.write(contents); 
+
+            res.write(contents);
             res.end();
         }
         else {
             res.writeHead(500);
-            res.end();    
+            res.end();
         }
     });
 }
 
 // listen for connection from an individual client
-/*io.sockets.on("connection", function(socket) {
+io.sockets.on("connection", function(socket) {
     // listen for setName event
     socket.on("setName", function(data) {
-        
+
         var userName = data.firstName + " " + data.lastName;
         // publish nameSet event with new username
         socket.emit("nameSet", {userName: userName});
     });
-});*/
+});
 
 
 
