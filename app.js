@@ -27,7 +27,7 @@ http.createServer(function(request, response) {
     // __dirname is a built-in variable containing the path where the code is running
     var localPath   = __dirname + "/public/";
 
-    console.log(filename + " " + ext + " " + dir + " " + localPath);
+    //console.log(filename + " " + ext + " " + dir + " " + localPath);
 
     if (extensions[ext]) {
 
@@ -43,7 +43,7 @@ http.createServer(function(request, response) {
         });
     }
     else {
-        console.log("Archivo desconocido");
+        console.log("Archivo desconocido: " + (dir ? dir + "/" : "") + filename);
         response.writeHead(404);
         response.end();
     }
