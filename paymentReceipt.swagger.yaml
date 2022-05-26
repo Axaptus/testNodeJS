@@ -1,0 +1,226 @@
+swagger: "2.0"
+info:
+  title: "Megalabs Integration Services"
+  description: "Services for business document management offered by Axite Integration Framework"
+  version: "1.0.0"
+  contact:
+    email: "info@axite.com.ar"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "ax-domletdev69747e372e2d6c56devaos.cloudax.dynamics.com"
+basePath: "/api/services/MegalabsIntegrationServices/BusinessDocumentService"
+tags:
+- name: "createPaymentReceipt"
+  description: "Creates a payment receipt as a customer payment journal into Dynamics 365."
+schemes:
+- "https"
+
+consumes:
+- "application/json"
+produces:
+- "application/json"
+
+paths:
+  /createPaymentReceipt:
+    post:
+      tags:
+      - "createPaymentReceipt"
+      summary: "Creates a payment receipt"
+      description: "Payment receipt management"
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "_request"
+        description: "Request object that represents the business document"
+        required: true
+        schema:
+          $ref: "#/definitions/payload"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"      
+        "405":
+          description: "Invalid input"
+      security:
+      - d365_auth:
+        - "https://ax-domletdev69747e372e2d6c56devaos.cloudax.dynamics.com/.default"
+
+security:
+    - d365_auth: []
+
+securityDefinitions:
+  d365_auth:
+    type: "oauth2" 
+    #authorizationUrl: "https://login.microsoftonline.com/4de8f685-7e4c-49b3-8012-89fa56ffb564/oauth2/v2.0/authorize"
+    tokenUrl: "https://login.microsoftonline.com/4de8f685-7e4c-49b3-8012-89fa56ffb564/oauth2/v2.0/token" 
+    flow: "application" # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+    scopes:
+      https://ax-domletdev69747e372e2d6c56devaos.cloudax.dynamics.com/.default: "default"
+
+
+definitions:
+  payload:
+    type: object
+    description: Request payload
+    properties:
+      _request: 
+        "$ref": "#/definitions/_request"    
+  _request:
+    type: object
+    properties:
+      dataAreaId:
+        type: string
+        description: Dynamics 365 company identification
+        example: LD1L
+      paymentReceipt:
+        title: paymentReceipt
+        type: object
+        description: Representation of the Payment receipt
+        additionalProperties: false
+        properties:
+          journalName:
+            type: string
+            description: Dynamics 365 journal name
+            example: CL COBRO
+          receiptDate:
+            type: string
+            format: date
+            description: Payment receipt posting date
+            example: '2022-05-18'
+          description:
+            type: string
+            example: 'REF: Test non-REST HTTP service'
+          customerId:
+            type: string
+            description: Dynamics 365 customer id
+            example: '10070'
+          collectorId:
+            type: string
+            description: Dynamics 365 worker personnel number
+            example: MPH-100
+          receiptId:
+            type: string
+            description: Payment receipt number
+            example: '00001001'
+          amount:
+            type: number
+            description: Total amount collected
+            example: '4469.64'
+          currencyCode:
+            type: string
+            description: Dynamics 365 currency code
+            example: DOP
+          company:
+            type: string
+            description: Dynamics 365 company identification for the journal line
+            example: LD1L
+          paymentMethods:
+            type: array
+            description: Payment methods tendered by the customer
+            items:
+              "$ref": "#/definitions/paymentMethod"
+          settledDocuments:
+            type: array
+            description: Documents to be settled against the payment
+            items:
+              "$ref": "#/definitions/settledDocument"
+        required:
+        - amount
+        - collectorId
+        - currencyCode
+        - customerId
+        - company
+        - journalName
+        - paymentMethods
+        - receiptDate
+        - receiptId
+        - settledDocuments
+  paymentMethod:
+        title: paymentMethod
+        type: object
+        description: Payment method tendered by the customer
+        additionalProperties: false
+        properties:
+          accountNum:
+            type: string
+            description: Dynamics 365 account number (customer id, bank id, etc)
+            example: '10070'
+          accountType:
+            type: string
+            enum:
+            - Cust
+            - Bank
+            description: Dynamics 365 account type enumeration
+            example: Cust
+          documentClassId:
+            type: string
+            description: Dynamics 365 AW LATAM voucher class id
+            example: CHEQUE AL DIA
+          documentNum:
+            type: string
+            description: Payment document number (checkid, tranfer number, etc)
+            example: '0134567'
+          documentDate:
+            type: string
+            format: date
+            description: Payment document issue date
+            example: '2022-04-07'
+          documentExpDate:
+            type: string
+            format: date
+            description: Payment document expiration date
+            example: '2022-10-21'
+          bankGroup:
+            type: string
+            description: Dynamics 365 bank group id
+            example: ADAP
+          currencyCode:
+            type: string
+            description: Dynamics 365 currency code
+            example: DOP
+          amount:
+            type: number
+            description: Amount of the payment method
+            example: '4469.64'
+        required:
+        - accountNum
+        - accountType
+        - documentClassId
+        - documentNum
+        - currencyCode
+        - amount
+  settledDocument:
+        title: settledDocument
+        type: object
+        description: Document to be settled against the payment
+        additionalProperties: false
+        properties:
+          settledDocumentNum:
+            type: string
+            description: Document number to be settled against the payment
+            example: B0100410297
+          amountSettled:
+            type: number
+            description: Amount to be settled
+            example: '4469.64'
+        required:
+        - amountSettled
+        - settledDocumentNum
+  ApiResponse:
+    type: object
+    properties:
+      documentId:
+        type: string
+      errorMessage:
+        type: string
+      success:
+        type: boolean
+      debugMessage:
+        type: string
+
